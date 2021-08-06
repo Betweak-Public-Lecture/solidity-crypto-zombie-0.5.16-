@@ -13,6 +13,9 @@ contract ZombieFactory {
 
     Zombie[] public zombies;
 
+    mapping(uint256 => address) public zombieToOwner; // key:zombieId, value: zombieOwner
+    mapping(address => uint256) public ownerZombieCount; // key: zombieOwner, value: count of zombie
+
     // _createZombie 라는 private 함수 생성 인자는 2개 (string _name, uint _dna)
     function _createZombie(string memory _name, uint256 _dna) private {
         // 해당 함수는 전달받은 인자들로 새로운 Zombie를 생성하고 zombies배열에 추가하는 함수
@@ -21,6 +24,10 @@ contract ZombieFactory {
         uint256 zombieId = zombies.push(Zombie(_name, _dna)) - 1;
         // Zombie 만들어졌어요(contract->FrontEnd)
         emit NewZombie(zombieId, _name, _dna);
+        // 매핑을 업데이트 하여 msg.sender가 저장되도록 작성
+        zombieToOwner[zombieId] = msg.sender;
+        // 2. msg.sender의 ownerZombieCount라는 증가. (++ 연산자)
+        ownerZombieCount[msg.sender]++;
     }
 
     // _generateRandomDna라는 private 함수를 만들고 인자는 (string _str) 반환타입은 (uint)
@@ -39,6 +46,7 @@ contract ZombieFactory {
     }
 
     function createRandomZombie(string memory _name) public {
+        require(ownerZombieCount[msg.sender] == 0);
         uint256 randData = _generateRandomDna(_name);
         _createZombie(_name, randData);
     }
