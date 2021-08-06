@@ -18,7 +18,7 @@ contract ZombieFactory {
         // 해당 함수는 전달받은 인자들로 새로운 Zombie를 생성하고 zombies배열에 추가하는 함수
         // Zombie zombie = Zombie(_name, _dna);
         // zombies.push(zombie);
-        uint256 zombidId = zombies.push(Zombie(_name, _dna));
+        uint256 zombieId = zombies.push(Zombie(_name, _dna)) - 1;
         // Zombie 만들어졌어요(contract->FrontEnd)
         emit NewZombie(zombieId, _name, _dna);
     }
@@ -34,12 +34,12 @@ contract ZombieFactory {
         // 해당 rand값을 16자리로 만들어서 반환 (hint: rand % ?
         // 545612348 --> 5자리의 난수로 만들려고 한다. 545612348 % 100000 ( 10**5)
 
-        uint256 rand = keccak256(_str);
+        uint256 rand = uint256(keccak256(abi.encodePacked(_str)));
         return rand % dnaModulus;
     }
 
     function createRandomZombie(string memory _name) public {
-        uint256 randData = _generateRandomDna(_str);
+        uint256 randData = _generateRandomDna(_name);
         _createZombie(_name, randData);
     }
 }
