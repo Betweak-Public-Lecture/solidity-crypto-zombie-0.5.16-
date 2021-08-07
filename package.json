@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "version": "truffle version"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.2.0",
-    "truffle": "^5.4.3"
+    "@openzeppelin/contracts": "^2.5.1",
+    "truffle": "^5.4.5"
   }
 }

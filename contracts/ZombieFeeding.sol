@@ -21,18 +21,22 @@ interface KittyInterface {
 }
 
 contract ZombieFeeding is ZombieFactory {
-    address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
-    KittyInterface kittyInterface = KittyInterface(ckAddress);
+    KittyInterface kittyInterface; // 선언만함. 값 대입 X
+
+    function setKittyContractAddress(address _address) external onlyOwner {
+        kittyInterface = KittyInterface(_address);
+    }
 
     function feedAndMultiply(
         uint256 _zombieId,
         uint256 _targetDna,
-        string _species
-    ) public {
+        string memory _species
+    ) internal {
         // 2. 주인만이 먹이를 줄 수 있도록 구성(require문 활용)
         require(msg.sender == zombieToOwner[_zombieId]);
         // 3. 먹이를 먹는 대상 좀비 가져오기
         Zombie storage zombie = zombies[_zombieId];
+        require(_isReady(zombie));
 
         uint256 newDna = (zombie.dna + _targetDna) / 2;
         if (
@@ -42,11 +46,21 @@ contract ZombieFeeding is ZombieFactory {
             newDna = newDna - (newDna % 100) + 99;
         }
         _createZombie("NoName", newDna);
+
+        _triggerCooldown(zombie);
     }
 
     function feedOnKitty(uint256 _zombieId, uint256 _kittyId) public {
         uint256 kittyDna;
         (, , , , , , , , , kittyDna) = kittyInterface.getKitty(_kittyId);
         feedAndMultiply(_zombieId, kittyDna, "kitty");
+    }
+
+    function _triggerCooldown(Zombie storage _zombie) internal {
+        _zombie.readyTime = uint32(now + cooldownTime);
+    }
+
+    function _isReady(Zombie storage _zombie) internal view returns (bool) {
+        return now >= _zombie.readyTime;
     }
 }

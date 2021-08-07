@@ -1,14 +1,27 @@
 pragma solidity ^0.5.16;
 
-contract ZombieFactory {
+/**
+환경변수 PATH: ./node_modules
+ */
+import "@openzeppelin/contracts/ownership/Ownable.sol";
+
+// 1. uint coolDownTime 선언 및 1 days라고 할당.
+// 2. Zombie 구조체 업데이트 --> _createZombie 함수 업데이트
+// 3. level에는 1 할당, readyTime은 (현재시간에 cooldownTime 더해서 할당)
+// ** 주의: readyTime의 DataType 확인 ** now는 uint256 타입임.
+contract ZombieFactory is Ownable {
     uint256 dnaDigits = 16;
     uint256 dnaModulus = 10**dnaDigits;
+
+    uint256 cooldownTime = 1 days;
 
     event NewZombie(uint256 ZombieId, string name, uint256 dna);
 
     struct Zombie {
         string name;
         uint256 dna;
+        uint32 level;
+        uint32 readyTime;
     }
 
     Zombie[] public zombies;
@@ -21,7 +34,9 @@ contract ZombieFactory {
         // 해당 함수는 전달받은 인자들로 새로운 Zombie를 생성하고 zombies배열에 추가하는 함수
         // Zombie zombie = Zombie(_name, _dna);
         // zombies.push(zombie);
-        uint256 zombieId = zombies.push(Zombie(_name, _dna)) - 1;
+        uint256 zombieId = zombies.push(
+            Zombie(_name, _dna, 1, uint32(now + cooldownTime))
+        ) - 1;
         // Zombie 만들어졌어요(contract->FrontEnd)
         emit NewZombie(zombieId, _name, _dna);
         // 매핑을 업데이트 하여 msg.sender가 저장되도록 작성
