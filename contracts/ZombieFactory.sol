@@ -17,7 +17,7 @@ contract ZombieFactory {
     mapping(address => uint256) public ownerZombieCount; // key: zombieOwner, value: count of zombie
 
     // _createZombie 라는 private 함수 생성 인자는 2개 (string _name, uint _dna)
-    function _createZombie(string memory _name, uint256 _dna) private {
+    function _createZombie(string memory _name, uint256 _dna) internal {
         // 해당 함수는 전달받은 인자들로 새로운 Zombie를 생성하고 zombies배열에 추가하는 함수
         // Zombie zombie = Zombie(_name, _dna);
         // zombies.push(zombie);
