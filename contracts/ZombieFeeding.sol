@@ -31,9 +31,7 @@ contract ZombieFeeding is ZombieFactory {
         uint256 _zombieId,
         uint256 _targetDna,
         string memory _species
-    ) internal {
-        // 2. 주인만이 먹이를 줄 수 있도록 구성(require문 활용)
-        require(msg.sender == zombieToOwner[_zombieId]);
+    ) internal zombieOwnerOf(_zombieId) {
         // 3. 먹이를 먹는 대상 좀비 가져오기
         Zombie storage zombie = zombies[_zombieId];
         require(_isReady(zombie));
