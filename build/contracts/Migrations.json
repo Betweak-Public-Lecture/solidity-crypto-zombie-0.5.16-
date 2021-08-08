@@ -120,7 +120,7 @@
                 "name": "msg",
                 "nodeType": "Identifier",
                 "overloadedDeclarations": [],
-                "referencedDeclaration": 802,
+                "referencedDeclaration": 874,
                 "src": "75:3:2",
                 "typeDescriptions": {
                   "typeIdentifier": "t_magic_message",
@@ -198,7 +198,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 802,
+                            "referencedDeclaration": 874,
                             "src": "190:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -274,10 +274,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        805,
-                        806
+                        877,
+                        878
                       ],
-                      "referencedDeclaration": 806,
+                      "referencedDeclaration": 878,
                       "src": "169:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -535,7 +535,7 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 802,
+                      "referencedDeclaration": 874,
                       "type": "msg",
                       "value": "msg"
                     },
@@ -629,10 +629,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                805,
-                                806
+                                877,
+                                878
                               ],
-                              "referencedDeclaration": 806,
+                              "referencedDeclaration": 878,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -673,7 +673,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 802,
+                                      "referencedDeclaration": 874,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -914,7 +914,7 @@
     }
   },
   "schemaVersion": "3.4.2",
-  "updatedAt": "2021-08-08T07:25:09.122Z",
+  "updatedAt": "2021-08-08T08:14:26.467Z",
   "devdoc": {
     "methods": {}
   },

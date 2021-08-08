@@ -23,14 +23,32 @@ contract ZombieBattle is ZombieHelper {
     function attack(uint256 _zombieId, uint256 _targetId)
         external
         zombieOwnerOf(_zombieId)
-    {}
+    {
+        Zombie storage myZombie = zombies[_zombieId];
+        require(_isReady(myZombie));
+        Zombie storage enemyZombie = zombies[_targetId];
+
+        uint256 rand = randMod(100); //0~99
+        // rand (0<(승률):69) ==> 승리
+        // rand (>=승률:70 ) ==> 패배
+        if (rand < attackVictoryProbability) {
+            // 우리 좀비가 승리한 경우
+            myZombie.winCount++;
+            myZombie.level++;
+            enemyZombie.lossCount++;
+
+            feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
+        } else {
+            // 패배한 경우
+            myZombie.lossCount++;
+            enemyZombie.winCount++;
+        }
+        _triggerCooldown(myZombie);
+    }
 
     function setAttakVictoryProbability(uint256 _prob) external onlyOwner {
         require(0 <= _prob && _prob <= 100);
 
         attackVictoryProbability = _prob;
     }
-    //     승리확률 70으로 생성하기
-    // (상태변수: uint attackVictoryProbability) 값은 70
-    // 2. 함수 attack(uint _zombieId, uint _targetId) external 생성
 }

@@ -22,6 +22,8 @@ contract ZombieFactory is Ownable {
         uint256 dna;
         uint32 level;
         uint32 readyTime;
+        uint16 winCount;
+        uint16 lossCount;
     }
 
     Zombie[] public zombies;
@@ -40,7 +42,7 @@ contract ZombieFactory is Ownable {
         // Zombie zombie = Zombie(_name, _dna);
         // zombies.push(zombie);
         uint256 zombieId = zombies.push(
-            Zombie(_name, _dna, 1, uint32(now + cooldownTime))
+            Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0)
         ) - 1;
         // Zombie 만들어졌어요(contract->FrontEnd)
         emit NewZombie(zombieId, _name, _dna);
