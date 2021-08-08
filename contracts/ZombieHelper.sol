@@ -2,15 +2,6 @@ pragma solidity ^0.5.16;
 
 import "./ZombieFeeding.sol";
 
-// changeName(uint _zombieId, string _newName)이라는 external 함수.
-// --> 2레벨 이상인 좀비만 사용 가능하도록 구성
-// 2. 함수 내용은 Tx 요청자와 zombie의 주인이 같은지 검증
-//  힌트: require과 msg.sender
-// 3. 이름바꾸기 기능 추가. 전달받은 _newName으로 사용
-// 4. changeDna 함수 정의  인자 2개 (??), 접근제어자 (??), Level이 20이상일때만
-// 가능하도록! (힌트: changeName과 비슷)
-// 5. 함수 내용은 Tx요청자와 zombie 주인 같은지 검증하고 dna를 변경하게 함.
-
 contract ZombieHelper is ZombieFeeding {
     modifier aboveLevel(uint256 _level, uint256 _zombieId) {
         require(zombies[_zombieId].level >= _level);
@@ -31,5 +22,29 @@ contract ZombieHelper is ZombieFeeding {
     {
         require(zombieToOwner[_zombieId] == msg.sender);
         zombies[_zombieId].dna = _newDna;
+    }
+
+    function getZombiesByOwner(address _owner)
+        external
+        view
+        returns (uint256[] memory)
+    {
+        uint256[] memory result = new uint256[](ownerZombieCount[_owner]);
+
+        uint256 zombieCount = 0;
+
+        // 1.   전체 좀비의 수만큼 반복한다.
+        for (uint256 i = 0; i < zombies.length; i++) {
+            // i: zombie의 id (index)
+            if (_owner == zombieToOwner[i]) {
+                // 2.   각 좀비마다 owner를 확인하고 비교한다.
+                // 2-1. 좀비의 owner가 _owner와 같으면 result에 추가한다.
+                result[zombieCount] = i;
+                zombieCount++;
+            }
+        }
+
+        // 3.   result를 return한다.
+        return result;
     }
 }
