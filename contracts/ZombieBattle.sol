@@ -33,15 +33,15 @@ contract ZombieBattle is ZombieHelper {
         // rand (>=승률:70 ) ==> 패배
         if (rand < attackVictoryProbability) {
             // 우리 좀비가 승리한 경우
-            myZombie.winCount++;
-            myZombie.level++;
-            enemyZombie.lossCount++;
+            myZombie.winCount = myZombie.winCount.add(1);
+            myZombie.level = myZombie.level.add(1);
+            enemyZombie.lossCount = enemyZombie.lossCount.add(1);
 
             feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
         } else {
             // 패배한 경우
-            myZombie.lossCount++;
-            enemyZombie.winCount++;
+            myZombie.lossCount = myZombie.lossCount.add(1);
+            enemyZombie.winCount = enemyZombie.winCount.add(1);
         }
         _triggerCooldown(myZombie);
     }

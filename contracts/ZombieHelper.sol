@@ -28,6 +28,7 @@ contract ZombieHelper is ZombieFeeding {
         _withdraw(address(this).balance);
     }
 
+
     function _withdraw(uint256 _amount) private onlyOwner {
         require(_amount <= address(this).balance);
         address payable owner = address(uint160(owner()));
@@ -36,7 +37,7 @@ contract ZombieHelper is ZombieFeeding {
 
     function levelUp(uint256 _zombieId) external payable {
         require(msg.value == levelUpFee);
-        zombies[_zombieId].level++;
+        zombies[_zombieId].level = zombies[_zombieId].level.add(1);
     }
 
     // setLevelUpFee - levelUpFee를 변경시킬 수 있는 함수
@@ -80,7 +81,7 @@ contract ZombieHelper is ZombieFeeding {
                 // 2.   각 좀비마다 owner를 확인하고 비교한다.
                 // 2-1. 좀비의 owner가 _owner와 같으면 result에 추가한다.
                 result[zombieCount] = i;
-                zombieCount++;
+                zombieCount = zombieCount.add(1);
             }
         }
 

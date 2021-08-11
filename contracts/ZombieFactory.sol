@@ -4,12 +4,20 @@ pragma solidity ^0.5.16;
 환경변수 PATH: ./node_modules
  */
 import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "./MySafeMath.sol";
 
 // 1. uint coolDownTime 선언 및 1 days라고 할당.
 // 2. Zombie 구조체 업데이트 --> _createZombie 함수 업데이트
 // 3. level에는 1 할당, readyTime은 (현재시간에 cooldownTime 더해서 할당)
 // ** 주의: readyTime의 DataType 확인 ** now는 uint256 타입임.
 contract ZombieFactory is Ownable {
+    // SafeMath를 다음 데이터에 적용
+    // using <library> for <datatype>
+    using SafeMath for uint256;
+    using SafeMath32 for uint32;
+    using SafeMath16 for uint16;
+
     uint256 dnaDigits = 16;
     uint256 dnaModulus = 10**dnaDigits;
 
@@ -49,7 +57,8 @@ contract ZombieFactory is Ownable {
         // 매핑을 업데이트 하여 msg.sender가 저장되도록 작성
         zombieToOwner[zombieId] = msg.sender;
         // 2. msg.sender의 ownerZombieCount라는 증가. (++ 연산자)
-        ownerZombieCount[msg.sender]++;
+        // ownerZombieCount[msg.sender]++;
+        ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender].add(1);
     }
 
     // _generateRandomDna라는 private 함수를 만들고 인자는 (string _str) 반환타입은 (uint)

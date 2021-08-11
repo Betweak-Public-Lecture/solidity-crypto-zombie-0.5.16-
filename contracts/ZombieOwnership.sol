@@ -32,8 +32,8 @@ contract ZombieOwnership is ZombieBattle, IERC721 {
         // 1. 소유권 이전
         zombieToOwner[_tokenId] = _to;
         // 2. Zombie 개수 sync
-        ownerZombieCount[_from]--;
-        ownerZombieCount[_to]++;
+        ownerZombieCount[_from] = ownerZombieCount[_from].sub(1);
+        ownerZombieCount[_to] = ownerZombieCount[_to].add(1);
         emit Transfer(_from, _to, _tokenId);
     }
 
@@ -51,7 +51,7 @@ contract ZombieOwnership is ZombieBattle, IERC721 {
       */
     function burn(uint256 _tokenId) external zombieOwnerOf(_tokenId){
         zombieToOwner[_tokenId] = address(0);
-        ownerZombieCount[msg.sender]--;
+        ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender].sub(1);
     }
 
 }
