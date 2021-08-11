@@ -1,0 +1,4 @@
+{
+  "solidity.compileUsingRemoteVersion": "",
+  "solidity.defaultCompiler": "localNodeModule"
+}
